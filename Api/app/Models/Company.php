@@ -4,14 +4,23 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use app\Model\Device;
+use app\Model\User;
 
 class Company extends Model
 {
     use HasFactory;
     protected $table = 'companys';
     protected $fillable = ['name', 'phone', 'address'];
-  /*   public function CompanyName()
+
+    public function devices(): HasMany
     {
-        return
-    } */
+        return $this->hasMany(Device::class);
+    }
+
+    public function users(): HasMany
+    {
+        return $this->hasMany(User::class);
+    }
 }
