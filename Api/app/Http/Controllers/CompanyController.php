@@ -4,16 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CompanyController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        //
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -28,15 +25,29 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'phone' => 'required',
+            'address' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+        $data = $validator->validated();
+        Company::create($data);
+        return response()->json(["msg"=>"Company added successfully"],201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Company $company)
+    public function show($id)
     {
-        //
+        $data = Company::find($id);
+        if($data == null){
+            return response()->json(['msg'=>'not found'],404);
+        }
+        return response()->json(['name'=>$data->name,'phone'=>$data->phone,'address'=>$data->address],201);
     }
 
     /**
@@ -50,16 +61,35 @@ class CompanyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Company $company)
+    public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'phone' => 'required',
+            'address' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+        $data = $validator->validated();
+        $up = Company::find($id);
+        if($data == null){
+            return response()->json(['msg'=>'not found'],404);
+        }
+        $up->update($data);
+        return response()->json(['msg'=>'updated successfully','name'=>$up->name,'phone'=>$up->phone,'address'=>$up->address],201);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Company $company)
+    public function destroy($id)
     {
-        //
+        $data = Company::find($id);
+        if($data == null){
+            return response()->json(['msg'=>'not found'],404);
+        }
+        $data->delete();
+        return response()->json(['msg'=>'Deleted successfully'],201);
     }
 }

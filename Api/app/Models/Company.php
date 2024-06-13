@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use app\Model\Device;
-use app\Model\User;
+use App\Models\Device;
+use App\Models\User;
 
 class Company extends Model
 {
