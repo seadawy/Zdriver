@@ -13,7 +13,11 @@ class TrackRecordController extends Controller
      */
     public function index()
     {
-        //
+        $data = TrackRecord::all();
+        if ($data == null) {
+            return response()->json(['msg' => 'not found'], 404);
+        }
+        return response()->json($data, 201);
     }
 
     /**
@@ -39,7 +43,7 @@ class TrackRecordController extends Controller
         }
         $data = $validator->validated();
         TrackRecord::create($data);
-        return response()->json(["msg"=>"TrackRecord added successfully"],201);
+        return response()->json(['msg' => 'TrackRecord added successfully'], 201);
     }
 
     /**
@@ -47,11 +51,11 @@ class TrackRecordController extends Controller
      */
     public function show($id)
     {
-        $up = TrackRecord::find($id);
-        if($up == null){
-            return response()->json(['msg'=>'not found'],404);
+        $up = TrackRecord::findOrFail($id);
+        if ($up == null) {
+            return response()->json(['msg' => 'not found'], 404);
         }
-        return response()->json(['type'=>$up->type,'description'=>$up->description,'device_id'=>$up->device_id],201);
+        return response()->json(['type' => $up->type, 'description' => $up->description, 'device_id' => $up->device_id], 201);
     }
 
     /**
@@ -76,12 +80,12 @@ class TrackRecordController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
         $data = $validator->validated();
-        $up = TrackRecord::find($id);
-        if($data == null){
-            return response()->json(['msg'=>'not found'],404);
+        $up = TrackRecord::findOrFail($id);
+        if ($data == null) {
+            return response()->json(['msg' => 'not found'], 404);
         }
         $up->update($data);
-        return response()->json(['msg'=>'updated successfully','type'=>$up->type,'description'=>$up->description,'device_id'=>$up->device_id],201);
+        return response()->json(['msg' => 'updated successfully', 'type' => $up->type, 'description' => $up->description, 'device_id' => $up->device_id], 201);
     }
 
     /**
@@ -89,11 +93,11 @@ class TrackRecordController extends Controller
      */
     public function destroy($id)
     {
-        $data = TrackRecord::find($id);
-        if($data == null){
-            return response()->json(['msg'=>'not found'],404);
+        $data = TrackRecord::findOrFail($id);
+        if ($data == null) {
+            return response()->json(['msg' => 'not found'], 404);
         }
         $data->delete();
-        return response()->json(['msg'=>'Deleted successfully'],201);
+        return response()->json(['msg' => 'Deleted successfully'], 201);
     }
 }

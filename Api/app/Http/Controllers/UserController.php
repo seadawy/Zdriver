@@ -2,30 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Company;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class CompanyController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $data = Company::all();
+        $data = User::all();
         if ($data == null) {
             return response()->json(['msg' => 'not found'], 404);
         }
         return response()->json($data, 201);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -35,15 +27,20 @@ class CompanyController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'phone' => 'required',
             'address' => 'required',
+            'role' => 'required',
+            'gender' => 'required|bool',
+            'phone' => 'required',
+            'email' => 'required|email',
+            'company_id' => 'required|int',
+            'password' => 'required|min:8',
         ]);
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
         $data = $validator->validated();
-        Company::create($data);
-        return response()->json(['msg' => 'Company added successfully'], 201);
+        User::create($data);
+        return response()->json(['msg' => 'User added successfully'], 201);
     }
 
     /**
@@ -51,19 +48,11 @@ class CompanyController extends Controller
      */
     public function show($id)
     {
-        $data = Company::findOrFail($id);
+        $data = User::findOrFail($id);
         if ($data == null) {
             return response()->json(['msg' => 'not found'], 404);
         }
-        return response()->json(['name' => $data->name, 'phone' => $data->phone, 'address' => $data->address], 201);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Company $company)
-    {
-        //
+        return response()->json($data, 201);
     }
 
     /**
@@ -73,19 +62,23 @@ class CompanyController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'phone' => 'required',
             'address' => 'required',
+            'role' => 'required',
+            'gender' => 'required|bool',
+            'phone' => 'required',
+            'email' => 'required|email',
+            'company_id' => 'required|int',
+            'password' => 'required|min:8',
         ]);
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
         $data = $validator->validated();
-        $up = Company::findOrFail($id);
-        if ($data == null) {
-            return response()->json(['msg' => 'not found'], 404);
+        if (User::findOrFail($id)->update($data)) {
+            return response()->json(['msg' => 'updated successfully', 'update data' => $data], 201);
+        } else {
+            return response()->json(['msg' => 'someting went wrong'], 404);
         }
-        $up->update($data);
-        return response()->json(['msg' => 'updated successfully', 'name' => $up->name, 'phone' => $up->phone, 'address' => $up->address], 201);
     }
 
     /**
@@ -93,11 +86,11 @@ class CompanyController extends Controller
      */
     public function destroy($id)
     {
-        $data = Company::findOrFail($id);
+        $data = User::findOrFail($id);
         if ($data == null) {
             return response()->json(['msg' => 'not found'], 404);
         }
         $data->delete();
-        return response()->json(['msg' => 'Deleted successfully'], 201);
+        return response()->json(['msg' => 'Deleted successfully','name'=>$data->name], 201);
     }
 }
