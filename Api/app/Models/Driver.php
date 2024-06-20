@@ -2,19 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\Device;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Driver extends User
 {
     use HasFactory;
     protected $table = 'driver';
-    protected $fillable = ['name', 'email', 'password', 'company_id', 'role', 'phone', 'gender', 'address', 'image', 'score', 'device_id'];
-    public function device(): HasOne
+    protected $fillable = ['user_id', 'device_id', 'score'];
+
+    public function user(): BelongsTo
     {
-        return $this->hasOne(Device::class);
+        return $this->belongsTo(User::class);
+    }
+    public function device(): BelongsTo
+    {
+        return $this->belongsTo(Device::class);
     }
 }

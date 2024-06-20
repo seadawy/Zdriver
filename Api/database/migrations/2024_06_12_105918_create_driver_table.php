@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('driver', function (Blueprint $table) {
             $table->id();
-            $table->string("score");
+            $table->foreignId('user_id')->constrained('users', 'id');
             $table->foreignId('device_id')->constrained('devices', 'id');
+            $table->string("score");
             $table->timestamps();
         });
     }
