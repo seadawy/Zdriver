@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Middleware\Authenticate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -59,3 +61,14 @@ Route::group(
         Route::delete('delete/{id}', [TrackRecordController::class, 'destroy']);
     },
 );
+
+Route::group([
+    'prefix' => 'auth'
+
+], function ($router) {
+
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+    Route::post('/me', [AuthController::class, 'me'])->middleware('auth:sanctum');
+});
