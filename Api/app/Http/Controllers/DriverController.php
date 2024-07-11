@@ -86,4 +86,9 @@ class DriverController extends Controller
         $data->delete();
         return response()->json(['msg' => 'Deleted successfully', 'Driver_id' => $data->id], 201);
     }
+    public function updateScore(Request $re, $id)
+    {
+        Driver::findOrFail($id)->update(['score'=>$re->score]);
+        return response()->json(['msg' => 'updated successfully'], 200);
+    }
 }

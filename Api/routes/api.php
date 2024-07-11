@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\reportController;
 use App\Http\Middleware\Authenticate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -11,7 +12,7 @@ use App\Http\Controllers\DriverController;
 
 Route::group(
     [
-        //'middleware' => 'api',
+        'middleware' => 'auth:sanctum',
         'prefix' => 'User',
     ],
     function ($router) {
@@ -24,7 +25,7 @@ Route::group(
 );
 Route::group(
     [
-        //'middleware' => 'api',
+        'middleware' => 'auth:sanctum',
         'prefix' => 'Driver',
     ],
     function ($router) {
@@ -32,12 +33,13 @@ Route::group(
         Route::post('store', [DriverController::class, 'store']);
         Route::get('show/{id}', [DriverController::class, 'show']);
         Route::put('update/{id}', [DriverController::class, 'update']);
+        Route::put('updateScore/{id}', [DriverController::class, 'updateScore']);
         Route::delete('delete/{id}', [DriverController::class, 'destroy']);
     },
 );
 Route::group(
     [
-        //'middleware' => 'api',
+        'middleware' => 'auth:sanctum',
         'prefix' => 'Company',
     ],
     function ($router) {
@@ -50,7 +52,7 @@ Route::group(
 );
 Route::group(
     [
-        //'middleware' => 'api',
+        'middleware' => 'auth:sanctum',
         'prefix' => 'TrackRecord',
     ],
     function ($router) {
@@ -72,3 +74,14 @@ Route::group([
     Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
     Route::post('/me', [AuthController::class, 'me'])->middleware('auth:sanctum');
 });
+
+Route::group([
+    'prefix' => 'report',
+    'middleware' => 'auth:sanctum',
+
+], function ($router) {
+    Route::post('/allUserCompany', [reportController::class, 'allUserCompany']);
+    Route::post('/scoreDriver', [reportController::class, 'scoreDriver']);
+    Route::post('/scoreCompany', [reportController::class, 'scoreCompany']);
+});
+
