@@ -1,14 +1,15 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\DeviceController;
+use App\Http\Controllers\DriverController;
 use App\Http\Controllers\reportController;
+use App\Http\Controllers\TrackRecordController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\Authenticate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\TrackRecordController;
-use App\Http\Controllers\DriverController;
 
 Route::group(
     [
@@ -37,6 +38,23 @@ Route::group(
         Route::delete('delete/{id}', [DriverController::class, 'destroy']);
     },
 );
+
+Route::group(
+    [
+        'middleware' => 'auth:sanctum',
+        'prefix' => 'Device',
+    ],
+    function ($router) {
+        Route::get('/', [DeviceController::class, 'index']);
+        Route::post('store', [DeviceController::class, 'store']);
+        Route::get('show/{id}', [DeviceController::class, 'show']);
+        Route::put('update/{id}', [DeviceController::class, 'update']);
+        Route::put('updateScore/{id}', [DeviceController::class, 'updateScore']);
+        Route::delete('delete/{id}', [DeviceController::class, 'destroy']);
+    },
+);
+
+
 Route::group(
     [
         'middleware' => 'auth:sanctum',
@@ -84,4 +102,3 @@ Route::group([
     Route::post('/scoreDriver', [reportController::class, 'scoreDriver']);
     Route::post('/scoreCompany', [reportController::class, 'scoreCompany']);
 });
-
