@@ -55,7 +55,7 @@ class CompanyController extends Controller
         if ($data == null) {
             return response()->json(['msg' => 'not found'], 404);
         }
-        return response()->json(['name' => $data->name, 'phone' => $data->phone, 'address' => $data->address], 201);
+        return response()->json(['All data'=>$data], 201);
     }
 
     /**
