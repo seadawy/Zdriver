@@ -10,6 +10,6 @@ class Authenticate
 {
     protected function redirectTo(Request $request): ?string
     {
-        return $request->expectsJson() ? null : route('login');
+        return $request->expectsJson() ? null : Response()->json(['warnning' => "user must be login", 'redirect' => '/login']);
     }
 }
