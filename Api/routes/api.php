@@ -57,7 +57,7 @@ Route::group(
 
 Route::group(
     [
-        'middleware' => 'auth:sanctum',
+       // 'middleware' => 'auth:sanctum',
         'prefix' => 'Company',
     ],
     function ($router) {
