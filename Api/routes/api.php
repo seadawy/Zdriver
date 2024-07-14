@@ -41,7 +41,7 @@ Route::group(
 
 Route::group(
     [
-        'middleware' => 'auth:sanctum',
+        //'middleware' => 'auth:sanctum',
         'prefix' => 'Device',
     ],
     function ($router) {
