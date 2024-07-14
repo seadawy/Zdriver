@@ -46,12 +46,11 @@ class DriverController extends Controller
      */
     public function show($id)
     {
-        try {
             $data = Driver::with('user', 'device')->where('id', $id);
-        } catch (\Exception $e) {
-
-            return response()->json($data, 500);
-        }
+            if ($data == null) {
+                return response()->json(['msg' => 'not found'], 404);
+            }
+            return response()->json(['Data'=>$data], 201);
     }
 
     /**
