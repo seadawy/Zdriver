@@ -55,7 +55,7 @@ class TrackRecordController extends Controller
         if ($up == null) {
             return response()->json(['msg' => 'not found'], 404);
         }
-        return response()->json(['type' => $up->type, 'description' => $up->description, 'device_id' => $up->device_id], 201);
+        return response()->json(['Data'=>$up], 201);
     }
 
     /**
